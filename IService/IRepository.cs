@@ -58,10 +58,8 @@ namespace IService
 		/// 取得實體清單
 		/// </summary>
 		/// <param name="predicate">搜尋條件</param>
-		/// <param name="orderBy">排序</param>
-		/// <param name="pagination">分頁</param>
 		/// <returns></returns>
-		List<T> GetList();
+		List<T> GetList(Expression<Func<T, T>> predicate);
 
 	}
 }
