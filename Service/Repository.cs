@@ -42,15 +42,12 @@ namespace Service
 		/// <summary>
 		/// 取得List
 		/// </summary>
-		/// <param name="predicate">搜尋條件</param>
-		/// <param name="orderBy">排序</param>
-		/// <param name="pagination">分頁</param>
 		/// <returns></returns>
-		public List<T> GetList()
+		public List<T> GetList(Expression<Func<T, T>>  predicate)
 		{
 			IQueryable<T> query = DbSet;
 
-			query = query.AsNoTracking();
+			if (predicate != null) query = query.Include(predicate);
 
 			return query.ToList();
 		}
