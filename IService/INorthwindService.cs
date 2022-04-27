@@ -15,5 +15,12 @@ namespace IService
 		/// </summary>
 		/// <returns></returns>
 		OneOf<List<Employees>, NotFound, Error<string>> GetAllEmployees();
+
+		/// <summary>
+		/// 新增Employees
+		/// </summary>
+		/// <param name="model">Employees資料</param>
+		/// <returns></returns>
+		OneOf<Success, Error<string>> Add(Employees model);
 	}
 }

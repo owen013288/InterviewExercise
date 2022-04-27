@@ -23,7 +23,7 @@ namespace Service
 			_employeesRepo = _unitOfWork.GetRepository<Employees>();
 		}
 
-		#region
+		#region GetAllEmployees [取得所有Employees]
 		/// <summary>
 		/// 取得所有Employees
 		/// </summary>
@@ -46,5 +46,43 @@ namespace Service
 			}
 		}
 		#endregion
-    }
+
+		#region Add [新增Employees]
+		/// <summary>
+		/// 新增Employees
+		/// </summary>
+		/// <param name="model">Employees資料</param>
+		/// <returns></returns>
+		public OneOf<Success, Error<string>> Add(Employees model)
+		{
+			try
+			{
+				// 時間關係就多餘的自動帶入
+				model.HireDate = DateTime.Now;
+				model.Address = "地址";
+				model.City = "縣市";
+				model.Region = "區域";
+				model.PostalCode = "郵遞區號";
+				model.Country = "國家";
+				model.HomePhone = "家電";
+				model.Extension = "延期";
+				model.Photo = null;
+				model.Notes = "筆記";
+				model.ReportsTo = 2;
+				model.PhotoPath = "圖片網址";
+				_employeesRepo.Insert(model);
+
+				bool result = _unitOfWork.Commit() > 0;
+
+				if (!result) return new Error<string>("新增失敗");
+
+				return new Success();
+			}
+			catch (Exception e)
+			{
+				return new Error<string>(e.Message);
+			}
+		}
+		#endregion
+	}
 }
