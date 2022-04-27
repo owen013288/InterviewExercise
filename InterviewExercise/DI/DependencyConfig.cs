@@ -1,13 +1,17 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using InterviewExercise.Controllers;
+using IService;
+using Models;
+using Service;
 using System.Reflection;
 
 namespace InterviewExercise.DI
 {
-	/// <summary>
-	/// DI注入
-	/// </summary>
-	public static class DependencyConfig
+    /// <summary>
+    /// DI注入
+    /// </summary>
+    public static class DependencyConfig
 	{
 		public static IContainer RegisterComponents()
 		{
@@ -18,16 +22,18 @@ namespace InterviewExercise.DI
 			builder.RegisterGeneric(typeof(UnitOfWork<>))
 					.As(typeof(IUnitOfWork<>));
 			//使用
-			builder.RegisterType<AchievementService>()
-				   .As<IAchievementService>();
+			builder.RegisterType<NorthwindService>()
+				   .As<INorthwindService>();
 			//EDMX
-			builder.RegisterType<RecycleEntities>()
-					.As<RecycleEntities>();
+			builder.RegisterType<NorthwindService>()
+					.As<INorthwindService>();
 			//EDMX
-			builder.RegisterType<Recycle_DBNEntities>()
-					.As<Recycle_DBNEntities>();
+			builder.RegisterType<NorthwindEntities>()
+					.As<NorthwindEntities>();
+
 			//所註冊的Controller
-			builder.RegisterControllers(Assembly.GetAssembly(typeof(AdminController)));
+			builder.RegisterControllers(Assembly.GetAssembly(typeof(HomeController)));
+
 			//Build起來
 			return builder.Build();
 		}
