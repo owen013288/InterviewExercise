@@ -153,5 +153,33 @@ namespace InterviewExercise.Controllers
 			}
 		}
 		#endregion
-	}
+
+		#region Delete [刪除Employee功能]
+		/// <summary>
+		/// 刪除Employee功能
+		/// </summary>
+		/// <param name="id">流水號</param>
+		/// <returns></returns>
+		public ActionResult Delete(int id)
+		{
+			var result = _northwindService.DeleteEmployee(id);
+			return result.Match(
+				model =>
+				{
+					return (ActionResult)RedirectToAction("Index");
+				},
+				notFound =>
+				{
+					TempData["ErrorMessage"] = "無此筆資料";
+					return (ActionResult)RedirectToAction("Index");
+				},
+				err =>
+				{
+					TempData["Status"] = "刪除失敗";
+					return Content(err.Value);
+				}
+			);
+		}
+        #endregion
+    }
 }

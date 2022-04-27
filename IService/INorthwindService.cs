@@ -36,5 +36,12 @@ namespace IService
 		/// <param name="id">流水號</param>
 		/// <returns></returns>
 		OneOf<Employees, NotFound, Error<string>> GetEmployee(int id);
+
+		/// <summary>
+		/// 刪除Employee
+		/// </summary>
+		/// <param name="id">流水號</param>
+		/// <returns></returns>
+		OneOf<Success, NotFound, Error<string>> DeleteEmployee(int id);
 	}
 }

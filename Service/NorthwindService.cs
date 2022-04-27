@@ -140,6 +140,34 @@ namespace Service
 				return new Error<string>(e.Message);
 			}
 		}
+		#endregion
+
+		#region DeleteEmployee [刪除Employee]
+		/// <summary>
+		/// 刪除Employee
+		/// </summary>
+		/// <param name="id">流水號</param>
+		/// <returns></returns>
+		public OneOf<Success, NotFound, Error<string>> DeleteEmployee(int id)
+		{
+			try
+			{
+				var employee = _employeesRepo.SingleOrDefault(x => x.EmployeeID == id);
+
+				if (employee == null) return new NotFound();
+
+				_employeesRepo.Delete(employee);
+
+				if (_unitOfWork.Commit() > 0)
+					return new Success();
+
+				return new Error<string>("刪除失敗");
+			}
+			catch (Exception e)
+			{
+				return new Error<string>(e.Message);
+			}
+		}
         #endregion
     }
 }

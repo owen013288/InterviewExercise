@@ -49,7 +49,7 @@
                 </td>
                 <td>
                     @Html.ActionLink("編輯", "Edit", new { id = item.EmployeeID }, new { @class = "btn btn-warning" })
-                    @Html.ActionLink("刪除", "Delete", new { id = item.EmployeeID }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("刪除", "Delete", new { id = item.EmployeeID }, new { @class = "btn btn-danger", @onclick = "if(!confirm('確實要刪除嗎?')) return false;" })
                 </td>
             </tr>
         }
