@@ -84,5 +84,74 @@ namespace InterviewExercise.Controllers
 			}
 		}
 		#endregion
+
+		#region Edit [編輯Employee功能]
+		/// <summary>
+		/// 編輯Employee功能 GET方法
+		/// </summary>
+		/// <param name="id">流水號</param>
+		/// <returns></returns>
+		public ActionResult Edit(int id)
+		{
+			var result = _northwindService.GetEmployee(id);
+			return result.Match(
+				model =>
+				{
+					ViewBag.BirthDate = (model.BirthDate.Value.ToString().Contains("下午") ? ((DateTime)model.BirthDate).AddHours(12) : model.BirthDate).ToString().Replace(" 上午 ", "T").Replace(" 下午 ", "T");
+                    return (ActionResult)View(model);
+				},
+				notFound =>
+				{
+					TempData["ErrorMessage"] = "無此筆資料";
+					return (ActionResult)RedirectToAction("Index");
+				},
+				err =>
+				{
+					TempData["Status"] = "修改失敗";
+					return (ActionResult)View(result);
+				}
+			);
+		}
+
+		/// <summary>
+		/// 編輯Employee功能 POST方法
+		/// </summary>
+		/// <param name="model">Employee資料</param>
+		/// <returns></returns>
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Edit(Employees model)
+		{
+			try
+			{
+				if (!ModelState.IsValid)
+					return View(model);
+
+				var result = _northwindService.Update(model);
+
+				return result.Match(
+						success =>
+						{
+							return (ActionResult)RedirectToAction("Index");
+						},
+						notFound =>
+						{
+							TempData["ErrorMessage"] = "無此筆資料";
+							return (ActionResult)RedirectToAction("Index");
+						},
+						err =>
+						{
+							TempData["Status"] = "修改失敗";
+							return Content(err.Value);
+						}
+					);
+			}
+			catch (Exception e)
+			{
+				TempData["Status"] = "修改失敗";
+				return Content(e.Message);
+			}
+		}
+		#endregion
 	}
 }

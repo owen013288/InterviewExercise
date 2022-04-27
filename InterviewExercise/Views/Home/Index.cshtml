@@ -48,8 +48,8 @@
                     @Html.DisplayFor(modelItem => item.BirthDate)
                 </td>
                 <td>
-                    @Html.ActionLink("編輯", "編輯", new { id = item.EmployeeID }, new { @class = "btn btn-warning" })
-                    @Html.ActionLink("刪除", "刪除", new { id = item.EmployeeID }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("編輯", "Edit", new { id = item.EmployeeID }, new { @class = "btn btn-warning" })
+                    @Html.ActionLink("刪除", "Delete", new { id = item.EmployeeID }, new { @class = "btn btn-danger" })
                 </td>
             </tr>
         }

@@ -84,5 +84,62 @@ namespace Service
 			}
 		}
 		#endregion
-	}
+
+		#region Update [更新Employees]
+		/// <summary>
+		/// 更新Employees
+		/// </summary>
+		/// <param name="model">Employees資料</param>
+		/// <returns></returns>
+		public OneOf<Success, NotFound, Error<string>> Update(Employees model)
+		{
+			try
+			{
+				var oldEmployees = _unitOfWork.Context.Employees.Where(m => m.EmployeeID == model.EmployeeID).SingleOrDefault();
+
+				if (oldEmployees == null) return new NotFound();
+
+				oldEmployees.LastName = model.LastName;
+				oldEmployees.FirstName = model.FirstName;
+				oldEmployees.Title = model.Title;
+				oldEmployees.TitleOfCourtesy = model.TitleOfCourtesy;
+				oldEmployees.BirthDate = model.BirthDate;
+
+				_employeesRepo.Update(oldEmployees, model.EmployeeID);
+
+				if (_unitOfWork.Commit() > 0)
+					return new Success();
+
+				return new Error<string>("更新失敗");
+			}
+			catch (Exception e)
+			{
+				return new Error<string>(e.Message);
+			}
+		}
+		#endregion
+
+		#region GetEmployee [透過ID取得單一Employee]
+		/// <summary>
+		/// 透過ID取得單一Employee
+		/// </summary>
+		/// <param name="id">流水號</param>
+		/// <returns></returns>
+		public OneOf<Employees, NotFound, Error<string>> GetEmployee(int id)
+		{
+			try
+			{
+				var employee = _employeesRepo.SingleOrDefault(x => x.EmployeeID == id);
+
+				if (employee == null) return new NotFound();
+
+				return employee;
+			}
+			catch (Exception e)
+			{
+				return new Error<string>(e.Message);
+			}
+		}
+        #endregion
+    }
 }

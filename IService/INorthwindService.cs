@@ -22,5 +22,19 @@ namespace IService
 		/// <param name="model">Employees資料</param>
 		/// <returns></returns>
 		OneOf<Success, Error<string>> Add(Employees model);
+
+		/// <summary>
+		/// 更新Employees
+		/// </summary>
+		/// <param name="model">Employees資料</param>
+		/// <returns></returns>
+		OneOf<Success, NotFound, Error<string>> Update(Employees model);
+
+		/// <summary>
+		/// 透過ID取得單一Employee
+		/// </summary>
+		/// <param name="id">流水號</param>
+		/// <returns></returns>
+		OneOf<Employees, NotFound, Error<string>> GetEmployee(int id);
 	}
 }
